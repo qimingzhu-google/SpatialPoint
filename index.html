@@ -256,11 +256,11 @@
         </p>
 
         <div class="authors">
-          Qiming Zhu<sup>1,2,*</sup>,
+          Qiming Zhu<sup>1,2*</sup>,
           Zhirui Fang<sup>1,2</sup>,
           Tianming Zhang<sup>2</sup>,
           Chuanxiu Liu<sup>2</sup>,
-          Xiaoke Jiang<sup>2,3,#</sup>,
+          Xiaoke Jiang<sup>2,3#</sup>,
           Lei Zhang<sup>2,3</sup>
         </div>
 
@@ -300,10 +300,32 @@
       <div class="section-card">
         <h2>Abstract</h2>
         <p>
-Embodied intelligence fundamentally requires a capability to determine \textit{where} to act in 3D space. We formalize this requirement as \textbf{embodied localization} --- the problem of predicting executable 3D points conditioned on visual observations and language instructions. We instantiate embodied localization with two complementary target types: \textit{touchable points}, surface-grounded 3D points enabling direct physical interaction, and \textit{air points}, free-space 3D points specifying placement and navigation goals, directional constraints, or geometric relations. 
-Embodied localization is inherently a problem of embodied 3D spatial reasoning --- yet most existing vision-language systems rely predominantly on RGB inputs, necessitating implicit geometric reconstruction that limits cross-scene generalization, despite the widespread adoption of RGB-D sensors in robotics.
-To address this gap, we propose \textbf{SpatialPoint}, a spatial-aware vision-language framework with careful design that integrates structured depth into a vision-language model (VLM) and generates camera-frame 3D coordinates. We construct a 2.6M-sample RGB-D dataset covering both touchable and air points QA pairs for training and evaluation. Extensive experiments demonstrate that incorporating depth into VLMs significantly improves embodied localization performance.
-We further validate SpatialPoint through real-robot deployment across three representative tasks: language-guided robotic arm grasping at specified locations, object placement to target destinations, and mobile robot navigation to goal positions.
+          Embodied intelligence fundamentally requires the capability to determine <i>where</i> to act in 3D space.
+          We formalize this requirement as <b>embodied localization</b>—the problem of predicting executable 3D points
+          conditioned on visual observations and language instructions. We instantiate embodied localization with two
+          complementary target types: <i>touchable points</i>, which are surface-grounded 3D points enabling direct
+          physical interaction, and <i>air points</i>, which are free-space 3D points specifying placement and navigation
+          goals, directional constraints, or geometric relations.
+        </p>
+        
+        <p>
+          Embodied localization is inherently a problem of embodied 3D spatial reasoning—yet most existing
+          vision-language systems rely predominantly on RGB inputs, requiring implicit geometric reconstruction
+          that limits cross-scene generalization, despite the widespread adoption of RGB-D sensors in robotics.
+        </p>
+        
+        <p>
+          To address this gap, we propose <b>SpatialPoint</b>, a spatial-aware vision-language framework with a careful
+          design that integrates structured depth into a vision-language model (VLM) and generates camera-frame 3D
+          coordinates. We construct a 2.6M-sample RGB-D dataset covering both touchable-point and air-point QA pairs
+          for training and evaluation. Extensive experiments demonstrate that incorporating depth into VLMs
+          significantly improves embodied localization performance.
+        </p>
+        
+        <p>
+          We further validate SpatialPoint through real-robot deployment across three representative tasks:
+          language-guided robotic arm grasping at specified locations, object placement to target destinations,
+          and mobile robot navigation to goal positions.
         </p>
       </div>
     </section>
