@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpatialPoint: Spatial-aware Point Prediction for Embodied Localization</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+      --maxw: 1100px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(180deg, #f8fafc 0%, #f7f8fb 100%);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .wrap {
+      width: min(var(--maxw), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 56px 0 24px;
+    }
+
+    .hero-card, .section-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      padding: 36px 28px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      text-align: center;
+    }
+
+    .subtitle {
+      margin: 14px auto 0;
+      max-width: 860px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .authors {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    .affils {
+      margin-top: 12px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .notes {
+      margin-top: 10px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-weight: 600;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      min-width: 112px;
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    section {
+      padding: 14px 0;
+    }
+
+    .section-card {
+      padding: 26px 24px;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 1.45rem;
+      letter-spacing: -0.02em;
+    }
+
+    .teaser {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #f3f4f6;
+      display: block;
+    }
+
+    .caption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .video-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .video-placeholder {
+      aspect-ratio: 16 / 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+      color: #1d4ed8;
+      font-weight: 700;
+      font-size: 1rem;
+      text-align: center;
+      padding: 16px;
+    }
+
+    .video-body {
+      padding: 14px 14px 16px;
+    }
+
+    .video-body h3 {
+      margin: 0 0 6px;
+      font-size: 1.03rem;
+    }
+
+    .video-body p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .highlights {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .pill-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      background: linear-gradient(180deg, #fff, #fafafa);
+    }
+
+    .pill-card .tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: #1d4ed8;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .pill-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.02rem;
+    }
+
+    .pill-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #0f172a;
+      color: #e5e7eb;
+      border-radius: 16px;
+      padding: 18px;
+      overflow: auto;
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .footer {
+      padding: 28px 0 46px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 860px) {
+      .grid-2, .highlights { grid-template-columns: 1fr; }
+      .hero-card, .section-card { padding: 22px 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="hero-card">
+        <h1>SpatialPoint: Spatial-aware Point Prediction for Embodied Localization</h1>
+        <p class="subtitle">
+          A depth-aware vision-language framework for predicting executable camera-frame 3D target points,
+          unifying <b>touchable points</b> and <b>air points</b> for embodied localization.
+        </p>
+
+        <div class="authors">
+          Qiming Zhu<sup>1,2,*</sup>,
+          Zhirui Fang<sup>1,2</sup>,
+          Tianming Zhang<sup>2</sup>,
+          Chuanxiu Liu<sup>2</sup>,
+          Xiaoke Jiang<sup>2,3,#</sup>,
+          Lei Zhang<sup>2,3</sup>
+        </div>
+
+        <div class="affils">
+          <div><sup>1</sup>Tsinghua University</div>
+          <div><sup>2</sup>Visincept</div>
+          <div><sup>3</sup>International Digital Economy Academy (IDEA)</div>
+        </div>
+
+        <div class="notes">
+          <div><sup>*</sup>Work done during an internship at Visincept.</div>
+          <div><sup>#</sup>Corresponding author.</div>
+        </div>
+
+        <div class="btn-row">
+          <a class="btn primary" href="#paper">Paper</a>
+          <a class="btn" href="#video">Video</a>
+          <a class="btn" href="#bibtex">BibTeX</a>
+          <a class="btn" href="#code">Code</a>
+          <a class="btn" href="#dataset">Dataset</a>
+        </div>
+      </div>
+    </header>
+
+    <section>
+      <div class="section-card">
+        <h2>Teaser</h2>
+        <img class="teaser" src="assets/teaser.png" alt="Teaser figure for SpatialPoint" />
+        <div class="caption">
+          Replace this teaser image with your main figure. A good choice is the paper teaser that contrasts
+          touchable points and air points under a unified embodied localization formulation.
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-card">
+        <h2>Abstract</h2>
+        <p>
+          Embodied intelligence fundamentally requires the capability to determine <i>where</i> to act in 3D space.
+          We formalize this requirement as <b>embodied localization</b>, the problem of predicting executable 3D points
+          conditioned on visual observations and language instructions. We instantiate embodied localization with two
+          complementary target types: <b>touchable points</b>, which are surface-grounded 3D targets enabling direct
+          physical interaction, and <b>air points</b>, which are free-space 3D targets specifying placement and navigation
+          goals, directional constraints, or geometric relations. To address the lack of explicit metric geometry in
+          RGB-only vision-language systems, we propose <b>SpatialPoint</b>, a spatial-aware framework that integrates
+          structured depth into a vision-language model and directly generates camera-frame 3D coordinates.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-card">
+        <h2>Highlights</h2>
+        <div class="highlights">
+          <div class="pill-card">
+            <div class="tag">Problem</div>
+            <h3>Embodied localization</h3>
+            <p>We unify contact-centric and free-space targets as executable camera-frame 3D point prediction.</p>
+          </div>
+          <div class="pill-card">
+            <div class="tag">Method</div>
+            <h3>Depth-aware VLM</h3>
+            <p>SpatialPoint introduces a dedicated depth-token stream for geometry-aware reasoning and structured decoding.</p>
+          </div>
+          <div class="pill-card">
+            <div class="tag">Data</div>
+            <h3>Large-scale RGB-D supervision</h3>
+            <p>SpatialPoint-Data and SpatialPoint-Bench support unified training and evaluation over touchable and air points.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="video">
+      <div class="section-card">
+        <h2>Videos</h2>
+        <div class="grid-2">
+          <div class="video-card">
+            <div class="video-placeholder">Replace with embedded video or GIF<br>Robot arm pick and place</div>
+            <div class="video-body">
+              <h3>Robot Arm Pick-and-Place</h3>
+              <p>The robot arm localizes the target box and places it at the specified destination.</p>
+            </div>
+          </div>
+          <div class="video-card">
+            <div class="video-placeholder">Replace with embedded video or GIF<br>Mobile robot navigation</div>
+            <div class="video-body">
+              <h3>Mobile Navigation and Retrieval</h3>
+              <p>The mobile robot navigates to the target location and retrieves the bottle.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-card">
+        <h2>Method Overview</h2>
+        <img class="teaser" src="assets/method.png" alt="Method overview figure" />
+        <div class="caption">
+          Replace this image with your architecture figure or data engine figure.
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-card">
+        <h2>Results</h2>
+        <div class="grid-2">
+          <div>
+            <img class="teaser" src="assets/results-touchable.png" alt="Touchable points results" />
+            <div class="caption">Touchable-point results. Replace with your main benchmark table or qualitative figure.</div>
+          </div>
+          <div>
+            <img class="teaser" src="assets/results-air.png" alt="Air points results" />
+            <div class="caption">Air-point results. Replace with your main benchmark table or qualitative figure.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="paper">
+      <div class="section-card">
+        <h2>Links</h2>
+        <p>
+          <b>Paper:</b> <a href="#">arXiv link</a><br>
+          <b>Code:</b> <a id="code" href="#">GitHub repository</a><br>
+          <b>Dataset:</b> <a id="dataset" href="#">Dataset link</a><br>
+          <b>Project page:</b> <a href="#">This page</a>
+        </p>
+      </div>
+    </section>
+
+    <section id="bibtex">
+      <div class="section-card">
+        <h2>BibTeX</h2>
+        <pre>@article{zhu2026spatialpoint,
+  title   = {SpatialPoint: Spatial-aware Point Prediction for Embodied Localization},
+  author  = {Qiming Zhu and Zhirui Fang and Tianming Zhang and Chuanxiu Liu and Xiaoke Jiang and Lei Zhang},
+  journal = {arXiv preprint arXiv:XXXX.XXXXX},
+  year    = {2026}
+}</pre>
+      </div>
+    </section>
+
+    <div class="footer">
+      Built for GitHub Pages. Replace placeholder images and links, then publish from the repository root or <code>/docs</code>.
+    </div>
+  </div>
+</body>
+</html>
