@@ -1,6 +1,6 @@
 # SpatialPoint: Spatial-aware Point Prediction for Embodied Localization
 
-[Project Page](https://qimingzhu-google.github.io/SpatialPoint/) | [Paper](assets/SpatialPoint_gh.pdf) 
+[Project Page](https://qimingzhu-google.github.io/SpatialPoint/) | [Paper](assets/SpatialPoint_gh.pdf) | [arXiv](https://arxiv.org/abs/2603.26690) 
 
 ![Teaser](assets/figure1.png)
 
